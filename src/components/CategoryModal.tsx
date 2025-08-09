@@ -27,7 +27,7 @@ const CategoryModal = ({ category, open, onOpenChange, imageSrc }: CategoryModal
         </div>
         
         {/* Scrollable content section */}
-        <div className="flex-1 overflow-y-auto px-6 pb-6">
+        <div className="flex-1 min-h-0 overflow-y-auto px-6 pb-6">
           <ul className="divide-y">
             {category?.items.map((it, idx) => (
               <li key={idx} className="py-3 md:py-4">
