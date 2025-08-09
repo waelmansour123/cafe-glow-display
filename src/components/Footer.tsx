@@ -4,8 +4,8 @@ const Footer = () => {
       <div className="container mx-auto px-4 py-10 grid gap-6 md:grid-cols-3">
         <div>
           <h3 className="font-display text-xl text-primary">Golden Cafe</h3>
-          <p className="mt-2 text-sm text-muted-foreground">
-            123 Golden Avenue, Downtown • Open daily 8:00 – 23:00
+          <p className="mt-2 text-sm text-muted-foreground" onClick={() => window.open("https://www.google.com/maps/place/Golden+café+resto/@36.7163975,10.3695246,19.45z/data=!4m6!3m5!1s0x12fd4edf9c1ab75b:0x89d1b7488be0ab64!8m2!3d36.716405!4d10.3696376!16s%2Fg%2F12ml2n6m4?entry=ttu&g_ep=EgoyMDI1MDgwNi4wIKXMDSoASAFQAw%3D%3D", "_blank")}>
+            rue 1 October, N22, Hammam-Lif 1164
           </p>
         </div>
         <div>
