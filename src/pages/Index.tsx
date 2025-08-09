@@ -21,7 +21,7 @@ import {
   ListChecks,
   Flame,
 } from "lucide-react";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import type { LucideIcon } from "lucide-react";
 
 // Category icons fallback map
@@ -117,6 +117,17 @@ const Index = () => {
     [categories, selectedCategoryId]
   );
 
+  // Scroll the selected category into view in the mobile list
+  const itemRefs = useRef<Record<string, HTMLDivElement | null>>({});
+  useEffect(() => {
+    if (selectedCategoryId) {
+      const el = itemRefs.current[selectedCategoryId];
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    }
+  }, [selectedCategoryId]);
+
   return (
     <main>
       <GoldenHeader />
@@ -126,24 +137,23 @@ const Index = () => {
           <h2 className="font-display text-2xl md:text-3xl text-primary">Browse by Category</h2>
           <p className="text-muted-foreground mt-1">Tap a category to view items and prices</p>
         </div>
-        {/* Mobile: horizontal scroll. Desktop: responsive grid */}
-        <div className="md:hidden -mx-4 px-4 overflow-x-auto [scrollbar-width:none] [-ms-overflow-style:none]">
-          <div className="flex gap-4 w-max pr-4">
-            {categories.map((cat) => {
-              const Icon = iconMap[cat.id] || Coffee;
-              const imageSrc = imageMap[cat.id as keyof typeof imageMap];
-              return (
+        {/* Mobile: centered vertical list. Desktop: responsive grid */}
+        <div className="md:hidden flex flex-col items-center gap-4">
+          {categories.map((cat) => {
+            const Icon = iconMap[cat.id] || Coffee;
+            const imageSrc = imageMap[cat.id as keyof typeof imageMap];
+            return (
+              <div key={cat.id} ref={(el) => { itemRefs.current[cat.id] = el; }} className="w-full max-w-md">
                 <CategoryCard
-                  key={cat.id}
                   title={cat.title}
                   Icon={Icon}
                   active={selectedCategoryId === cat.id}
                   onClick={() => setSelectedCategoryId(cat.id)}
                   imageSrc={imageSrc}
                 />
-              );
-            })}
-          </div>
+              </div>
+            );
+          })}
         </div>
         <div className="hidden md:grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
           {categories.map((cat) => {
