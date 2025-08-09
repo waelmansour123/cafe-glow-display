@@ -1,7 +1,7 @@
 import GoldenHeader from "@/components/GoldenHeader";
 import CategoryCard from "@/components/CategoryCard";
-import MenuDisplay from "@/components/MenuDisplay";
 import Footer from "@/components/Footer";
+import CategoryModal from "@/components/CategoryModal";
 import menuData from "@/data/menu";
 import {
   Coffee,
@@ -21,9 +21,10 @@ import {
   ListChecks,
   Flame,
 } from "lucide-react";
-import { useMemo, useRef, useState } from "react";
+import { useMemo, useState } from "react";
 import type { LucideIcon } from "lucide-react";
 
+// Category icons fallback map
 const iconMap: Record<string, LucideIcon> = {
   supplement: UtensilsCrossed,
   chicha: Flame,
@@ -61,21 +62,60 @@ const iconMap: Record<string, LucideIcon> = {
   menus: ListChecks,
 };
 
+// Images for some popular categories
+import imgPizza from "@/assets/categories/pizza.jpg";
+import imgBurger from "@/assets/categories/burger.jpg";
+import imgCoffee from "@/assets/categories/coffee.jpg";
+import imgJuice from "@/assets/categories/juice.jpg";
+import imgDesserts from "@/assets/categories/desserts.jpg";
+import imgSalads from "@/assets/categories/salads.jpg";
+import imgPasta from "@/assets/categories/pasta.jpg";
+import imgCrepes from "@/assets/categories/crepes.jpg";
+import imgPancakes from "@/assets/categories/pancakes.jpg";
+import imgWaffles from "@/assets/categories/waffles.jpg";
+import imgSmoothies from "@/assets/categories/smoothies.jpg";
+import imgMilkshake from "@/assets/categories/milkshake.jpg";
+import imgSoda from "@/assets/categories/soda.jpg";
+import imgMojito from "@/assets/categories/mojito.jpg";
+import imgIcecream from "@/assets/categories/icecream.jpg";
+import imgHotchocolate from "@/assets/categories/hotchocolate.jpg";
+import imgTea from "@/assets/categories/tea.jpg";
+import imgBreakfast from "@/assets/categories/breakfast.jpg";
+import imgFries from "@/assets/categories/fries.jpg";
+
 const Index = () => {
-  const [openValues, setOpenValues] = useState<string[]>([]);
-  const menuRef = useRef<HTMLDivElement>(null);
-
   const categories = useMemo(() => menuData, []);
+  const [selectedCategoryId, setSelectedCategoryId] = useState<string | null>(null);
 
-  const toggleCategory = (id: string) => {
-    setOpenValues((prev) =>
-      prev.includes(id) ? prev.filter((v) => v !== id) : [...prev, id]
-    );
-    // Scroll the menu section into view for quick access
-    setTimeout(() => {
-      menuRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
-    }, 0);
-  };
+  const imageMap = useMemo(() => ({
+    pizza: imgPizza,
+    burger: imgBurger,
+    cafes: imgCoffee,
+    "fantasia-coffee": imgCoffee,
+    nespresso: imgCoffee,
+    "chocolat-chaud": imgHotchocolate,
+    desserts: imgDesserts,
+    salades: imgSalads,
+    pates: imgPasta,
+    "crepes-sucrees": imgCrepes,
+    "crepes-salees": imgCrepes,
+    pancakes: imgPancakes,
+    gaufres: imgWaffles,
+    smoothies: imgSmoothies,
+    milkshakes: imgMilkshake,
+    "soft-drink": imgSoda,
+    mojitos: imgMojito,
+    glaces: imgIcecream,
+    "jus-frais": imgJuice,
+    "the-infusion": imgTea,
+    menus: imgBreakfast,
+    supplement: imgFries,
+  }), []);
+
+  const selectedCategory = useMemo(
+    () => categories.find((c) => c.id === selectedCategoryId) || null,
+    [categories, selectedCategoryId]
+  );
 
   return (
     <main>
@@ -91,13 +131,15 @@ const Index = () => {
           <div className="flex gap-4 w-max pr-4">
             {categories.map((cat) => {
               const Icon = iconMap[cat.id] || Coffee;
+              const imageSrc = imageMap[cat.id as keyof typeof imageMap];
               return (
                 <CategoryCard
                   key={cat.id}
                   title={cat.title}
                   Icon={Icon}
-                  active={openValues.includes(cat.id)}
-                  onClick={() => toggleCategory(cat.id)}
+                  active={selectedCategoryId === cat.id}
+                  onClick={() => setSelectedCategoryId(cat.id)}
+                  imageSrc={imageSrc}
                 />
               );
             })}
@@ -106,25 +148,26 @@ const Index = () => {
         <div className="hidden md:grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
           {categories.map((cat) => {
             const Icon = iconMap[cat.id] || Coffee;
+            const imageSrc = imageMap[cat.id as keyof typeof imageMap];
             return (
               <CategoryCard
                 key={cat.id}
                 title={cat.title}
                 Icon={Icon}
-                active={openValues.includes(cat.id)}
-                onClick={() => toggleCategory(cat.id)}
+                active={selectedCategoryId === cat.id}
+                onClick={() => setSelectedCategoryId(cat.id)}
+                imageSrc={imageSrc}
               />
             );
           })}
         </div>
       </section>
 
-      <div ref={menuRef} className="mt-8 md:mt-12" />
-
-      <MenuDisplay
-        categories={categories}
-        openValues={openValues}
-        onOpenChange={setOpenValues}
+      <CategoryModal
+        category={selectedCategory}
+        open={!!selectedCategory}
+        onOpenChange={(o) => !o && setSelectedCategoryId(null)}
+        imageSrc={selectedCategory ? imageMap[selectedCategory.id as keyof typeof imageMap] : undefined}
       />
 
       <Footer />

@@ -7,9 +7,10 @@ interface CategoryCardProps {
   active?: boolean;
   onClick?: () => void;
   Icon: LucideIcon;
+  imageSrc?: string;
 }
 
-const CategoryCard = ({ title, active, onClick, Icon }: CategoryCardProps) => {
+const CategoryCard = ({ title, active, onClick, Icon, imageSrc }: CategoryCardProps) => {
   return (
     <button
       onClick={onClick}
@@ -27,16 +28,25 @@ const CategoryCard = ({ title, active, onClick, Icon }: CategoryCardProps) => {
         )}
       >
         <div className="flex items-center gap-4">
-          <div className={cn(
-            "flex size-14 shrink-0 items-center justify-center rounded-md",
-            "bg-[hsl(var(--secondary))] text-primary shadow-inner"
-          )}>
-            <Icon className="size-7" aria-hidden="true" />
+          <div
+            className={cn(
+              "relative flex size-14 shrink-0 items-center justify-center rounded-md overflow-hidden",
+              "bg-[hsl(var(--secondary))] text-primary shadow-inner"
+            )}
+          >
+            {imageSrc ? (
+              <img
+                src={imageSrc}
+                alt={`${title} image`}
+                className="absolute inset-0 w-full h-full object-cover"
+                loading="lazy"
+              />
+            ) : (
+              <Icon className="size-7" aria-hidden="true" />
+            )}
           </div>
           <div>
-            <div className="font-medium text-base md:text-lg text-foreground">
-              {title}
-            </div>
+            <div className="font-medium text-base md:text-lg text-foreground">{title}</div>
             <div className="text-sm text-muted-foreground">Tap to view items</div>
           </div>
         </div>
