@@ -11,18 +11,18 @@ interface CategoryModalProps {
 const CategoryModal = ({ category, open, onOpenChange, imageSrc }: CategoryModalProps) => {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-lg md:max-w-2xl bg-card/90 backdrop-blur-md border shadow-elegant">
+      <DialogContent className="max-w-lg md:max-w-2xl max-h-[85vh] overflow-y-auto bg-card/90 backdrop-blur-md border shadow-elegant">
         {imageSrc ? (
           <div className="aspect-[16/9] w-full overflow-hidden rounded-md">
             <img src={imageSrc} alt={`${category?.title} image`} loading="lazy" className="w-full h-full object-cover" />
           </div>
         ) : null}
-        <DialogHeader>
+        <DialogHeader className="sticky top-0 z-10 bg-card/90 backdrop-blur-md">
           <DialogTitle className="font-display text-xl md:text-2xl text-primary">
             {category?.title}
           </DialogTitle>
         </DialogHeader>
-        <div>
+        <div className="max-h-[60vh] md:max-h-[70vh] overflow-y-auto pr-1">
           <ul className="divide-y">
             {category?.items.map((it, idx) => (
               <li key={idx} className="py-3 md:py-4">
