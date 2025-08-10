@@ -10,6 +10,7 @@ interface CategoryCardProps {
   onClick?: () => void;    // Function to call when card is clicked
   Icon: LucideIcon;       // Lucide icon component to display
   imageSrc?: string;      // Optional image URL for the category
+  compact?: boolean;      // Optional compact mode for mobile
 }
 
 /**
@@ -22,7 +23,7 @@ interface CategoryCardProps {
  * - Accessibility support with proper ARIA attributes
  * - Elegant shadow and scaling animations
  */
-const CategoryCard = ({ title, active, onClick, Icon, imageSrc }: CategoryCardProps) => {
+const CategoryCard = ({ title, active, onClick, Icon, imageSrc, compact = false }: CategoryCardProps) => {
   return (
     <button
       onClick={onClick}
@@ -34,18 +35,26 @@ const CategoryCard = ({ title, active, onClick, Icon, imageSrc }: CategoryCardPr
     >
       <Card
         className={cn(
-          "p-4 md:p-5 rounded-lg border bg-card/80 backdrop-blur-sm",
-          "transition-shadow", // Smooth shadow transitions
+          // Base styles
+          "rounded-lg border bg-card/80 backdrop-blur-sm transition-shadow",
+          // Responsive padding - smaller on mobile when compact
+          compact ? "p-3" : "p-4 md:p-5",
           // Conditional styling based on active state
           active ? "shadow-glow" : "shadow-elegant hover:shadow-glow"
         )}
       >
-        <div className="flex items-center gap-4">
+        <div className={cn(
+          "flex items-center gap-3",
+          // In compact mode, use smaller gap and potentially stack vertically on very small screens
+          compact && "gap-2"
+        )}>
           {/* Category icon/image container */}
           <div
             className={cn(
-              "relative flex size-14 shrink-0 items-center justify-center rounded-md overflow-hidden",
-              "bg-[hsl(var(--secondary))] text-primary shadow-inner"
+              "relative flex shrink-0 items-center justify-center rounded-md overflow-hidden",
+              "bg-[hsl(var(--secondary))] text-primary shadow-inner",
+              // Responsive icon size - smaller in compact mode
+              compact ? "size-10" : "size-14"
             )}
           >
             {/* Show image if available, otherwise show icon */}
@@ -57,14 +66,22 @@ const CategoryCard = ({ title, active, onClick, Icon, imageSrc }: CategoryCardPr
                 loading="lazy" // Optimize image loading
               />
             ) : (
-              <Icon className="size-7" aria-hidden="true" />
+              <Icon className={cn("text-primary", compact ? "size-5" : "size-7")} aria-hidden="true" />
             )}
           </div>
           
           {/* Category information */}
-          <div>
-            <div className="font-medium text-base md:text-lg text-foreground">{title}</div>
-            <div className="text-sm text-muted-foreground">Tap to view items</div>
+          <div className="flex-1 min-w-0">
+            <div className={cn(
+              "font-medium text-foreground truncate",
+              // Responsive text size
+              compact ? "text-sm" : "text-base md:text-lg"
+            )}>
+              {title}
+            </div>
+            {!compact && (
+              <div className="text-sm text-muted-foreground">Tap to view items</div>
+            )}
           </div>
         </div>
       </Card>

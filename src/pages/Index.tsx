@@ -137,24 +137,26 @@ const Index = () => {
           <h2 className="font-display text-2xl md:text-3xl text-primary">Browse by Category</h2>
           <p className="text-muted-foreground mt-1">Tap a category to view items and prices</p>
         </div>
-        {/* Mobile: centered vertical list. Desktop: responsive grid */}
-        <div className="md:hidden flex flex-col items-center gap-4">
+        {/* Mobile layout: 2-column grid for better screen utilization */}
+        <div className="md:hidden grid grid-cols-2 gap-3 px-2">
           {categories.map((cat) => {
             const Icon = iconMap[cat.id] || Coffee;
             const imageSrc = imageMap[cat.id as keyof typeof imageMap];
             return (
-              <div key={cat.id} ref={(el) => { itemRefs.current[cat.id] = el; }} className="w-full max-w-md">
-                <CategoryCard
-                  title={cat.title}
-                  Icon={Icon}
-                  active={selectedCategoryId === cat.id}
-                  onClick={() => setSelectedCategoryId(cat.id)}
-                  imageSrc={imageSrc}
-                />
-              </div>
+              <CategoryCard
+                key={cat.id}
+                title={cat.title}
+                Icon={Icon}
+                active={selectedCategoryId === cat.id}
+                onClick={() => setSelectedCategoryId(cat.id)}
+                imageSrc={imageSrc}
+                compact={true} // New prop for mobile layout
+              />
             );
           })}
         </div>
+
+        {/* Desktop layout: responsive grid */}
         <div className="hidden md:grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
           {categories.map((cat) => {
             const Icon = iconMap[cat.id] || Coffee;

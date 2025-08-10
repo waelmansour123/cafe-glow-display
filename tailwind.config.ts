@@ -1,85 +1,49 @@
-// TypeScript configuration type for Tailwind CSS
 import type { Config } from "tailwindcss";
 
-/**
- * Tailwind CSS Configuration
- * 
- * Configures the utility-first CSS framework
- * Includes custom theme extensions, fonts, and colors
- */
 export default {
-	// Dark mode configuration - uses class-based toggling
 	darkMode: ["class"],
-	
-	// Content paths for Tailwind to scan for class usage
 	content: [
-		"./pages/**/*.{ts,tsx}",      // Pages directory
-		"./components/**/*.{ts,tsx}", // Components directory  
-		"./app/**/*.{ts,tsx}",        // App directory
-		"./src/**/*.{ts,tsx}",        // Source directory (main one used)
+		"./pages/**/*.{ts,tsx}",
+		"./components/**/*.{ts,tsx}",
+		"./app/**/*.{ts,tsx}",
+		"./src/**/*.{ts,tsx}",
 	],
-	
-	// No prefix for utility classes
 	prefix: "",
-	
-	// Theme configuration
 	theme: {
-		// Container settings for responsive layouts
 		container: {
-			center: true,           // Center containers
-			padding: '2rem',        // Default padding
+			center: true,
+			padding: '2rem',
 			screens: {
-				'2xl': '1400px'     // Max width for 2xl breakpoint
+				'2xl': '1400px'
 			}
 		},
-		
-		// Extend default Tailwind theme
 		extend: {
-			// Custom font families
 			fontFamily: {
-				// Elegant serif font for headings and display text
 				display: ["Playfair Display", "serif"],
-				// Clean sans-serif for body text
 				sans: ["Inter", "system-ui", "sans-serif"],
 			},
-			
-			// Custom color system using CSS variables
-			// This allows for easy theme switching and customization
 			colors: {
-				// Border and form colors
 				border: 'hsl(var(--border))',
 				input: 'hsl(var(--input))',
-				ring: 'hsl(var(--ring))',           // Focus rings
-				
-				// Background colors
+				ring: 'hsl(var(--ring))',
 				background: 'hsl(var(--background))',
 				foreground: 'hsl(var(--foreground))',
-				
-				// Primary brand colors (gold theme)
 				primary: {
 					DEFAULT: 'hsl(var(--primary))',
 					foreground: 'hsl(var(--primary-foreground))'
 				},
-				
-				// Secondary colors
 				secondary: {
 					DEFAULT: 'hsl(var(--secondary))',
 					foreground: 'hsl(var(--secondary-foreground))'
 				},
-				
-				// Error/destructive colors
 				destructive: {
 					DEFAULT: 'hsl(var(--destructive))',
 					foreground: 'hsl(var(--destructive-foreground))'
 				},
-				
-				// Muted colors for less prominent text
 				muted: {
 					DEFAULT: 'hsl(var(--muted))',
 					foreground: 'hsl(var(--muted-foreground))'
 				},
-				
-				// Accent colors for highlights
 				accent: {
 					DEFAULT: 'hsl(var(--accent))',
 					foreground: 'hsl(var(--accent-foreground))'
