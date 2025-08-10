@@ -84,6 +84,18 @@ import imgHotchocolate from "@/assets/categories/hotchocolate.jpg";
 import imgTea from "@/assets/categories/tea.jpg";
 import imgBreakfast from "@/assets/categories/breakfast.jpg";
 import imgFries from "@/assets/categories/fries.jpg";
+import imgPanuzzo from "@/assets/categories/panuzzo.jpg";
+// New category images
+import imgChicha from "@/assets/categories/chicha.jpg";
+import imgMakloub from "@/assets/categories/makloub.jpg";
+import imgBaguetteFarcie from "@/assets/categories/baguetteFarcie.jpg";
+import imgPlats from "@/assets/categories/plats.jpg";
+import imgOmelettes from "@/assets/categories/omelettes.jpg";
+import imgBrik from "@/assets/categories/brik.jpg";
+import imgBubblesWaffles from "@/assets/categories/bubbleswaffles.jpg";
+import imgDetox from "@/assets/categories/detox.jpg";
+import imgFrappuccinos from "@/assets/categories/frappuccinos.jpg";
+import imgCocktails from "@/assets/categories/cocktails.jpg";
 
 const Index = () => {
   const categories = useMemo(() => menuData, []);
@@ -117,6 +129,18 @@ const Index = () => {
     "the-infusion": imgTea,
     menus: imgBreakfast,
     supplement: imgFries,
+    panuzzo: imgPanuzzo,
+    // New category images
+    chicha: imgChicha,
+    makloub: imgMakloub,
+    "baguette-farcie": imgBaguetteFarcie,
+    plats: imgPlats,
+    omelettes: imgOmelettes,
+    brik: imgBrik,
+    "bubbles-waffles": imgBubblesWaffles,
+    detox: imgDetox,
+    frappuccinos: imgFrappuccinos,
+    cocktails: imgCocktails,
   }), []);
 
   const selectedCategory = useMemo(
