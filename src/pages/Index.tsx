@@ -21,7 +21,9 @@ import {
   ListChecks,
   Flame,
 } from "lucide-react";
-import { useEffect, useMemo, useRef, useState } from "react";
+// React hooks for state management and performance optimization
+import { useEffect, useMemo, useRef, useState, useCallback } from "react";
+// TypeScript type for icon components
 import type { LucideIcon } from "lucide-react";
 
 // Category icons fallback map
@@ -87,6 +89,11 @@ const Index = () => {
   const categories = useMemo(() => menuData, []);
   const [selectedCategoryId, setSelectedCategoryId] = useState<string | null>(null);
 
+  // Memoized callback for category selection to prevent unnecessary re-renders
+  const handleCategorySelect = useCallback((categoryId: string) => {
+    setSelectedCategoryId(categoryId);
+  }, []);
+
   const imageMap = useMemo(() => ({
     pizza: imgPizza,
     burger: imgBurger,
@@ -138,7 +145,7 @@ const Index = () => {
           <p className="text-muted-foreground mt-1">Tap a category to view items and prices</p>
         </div>
         {/* Mobile layout: 2-column grid for better screen utilization */}
-        <div className="md:hidden grid grid-cols-2 gap-3 px-2">
+        <div className="md:hidden grid grid-cols-2 gap-3 px-2 mobile-grid mobile-scroll">
           {categories.map((cat) => {
             const Icon = iconMap[cat.id] || Coffee;
             const imageSrc = imageMap[cat.id as keyof typeof imageMap];
@@ -148,7 +155,7 @@ const Index = () => {
                 title={cat.title}
                 Icon={Icon}
                 active={selectedCategoryId === cat.id}
-                onClick={() => setSelectedCategoryId(cat.id)}
+                onClick={() => handleCategorySelect(cat.id)}
                 imageSrc={imageSrc}
                 compact={true} // New prop for mobile layout
               />
@@ -167,7 +174,7 @@ const Index = () => {
                 title={cat.title}
                 Icon={Icon}
                 active={selectedCategoryId === cat.id}
-                onClick={() => setSelectedCategoryId(cat.id)}
+                onClick={() => handleCategorySelect(cat.id)}
                 imageSrc={imageSrc}
               />
             );

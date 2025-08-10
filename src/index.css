@@ -99,22 +99,87 @@ All colors MUST be HSL.
 }
 
 @layer base {
+  /* Apply border color to all elements */
   * {
     @apply border-border;
   }
 
+  /* Body styles with gradient background */
   body {
     @apply bg-background text-foreground;
+    /* Subtle gradient background that's fixed to viewport */
     background-image: var(--gradient-subtle);
     background-attachment: fixed;
+    /* Mobile performance optimizations */
+    -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+    overscroll-behavior: contain; /* Prevent scroll chaining */
+  }
+
+  /* Optimize all images for performance */
+  img {
+    content-visibility: auto; /* Only render visible images */
+    contain-intrinsic-size: 200px; /* Prevent layout shifts */
   }
 }
 
 @layer utilities {
-  .shadow-elegant { box-shadow: var(--shadow-elegant); }
-  .shadow-glow { box-shadow: var(--shadow-glow); }
-  .hover-scale { @apply transition-transform duration-200 hover:scale-105; }
-  .story-link { position: relative; display: inline-block; }
-  .story-link::after { content: ""; position: absolute; left: 0; bottom: -2px; width: 100%; height: 2px; background-color: hsl(var(--primary)); transform: scaleX(0); transform-origin: right; transition: transform .3s ease; }
-  .story-link:hover::after { transform: scaleX(1); transform-origin: left; }
+  /* Custom shadow utilities using CSS variables */
+  .shadow-elegant { 
+    box-shadow: var(--shadow-elegant); 
+  }
+  
+  .shadow-glow { 
+    box-shadow: var(--shadow-glow); 
+  }
+  
+  /* Hover scaling animation for interactive elements - optimized for mobile */
+  .hover-scale { 
+    transition: transform 200ms ease;
+  }
+  
+  /* Only enable hover effects on devices that support them */
+  @media (hover: hover) {
+    .hover-scale:hover {
+      transform: scale(1.05);
+    }
+  }
+  
+  /* Mobile-optimized scrolling container */
+  .mobile-scroll {
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+    scroll-behavior: smooth;
+  }
+  
+  /* Performance optimization for mobile grids */
+  .mobile-grid {
+    contain: layout style paint;
+    content-visibility: auto;
+  }
+  
+  /* Story-style link with animated underline effect */
+  .story-link { 
+    position: relative; 
+    display: inline-block; 
+  }
+  
+  /* Animated underline that grows on hover */
+  .story-link::after { 
+    content: ""; 
+    position: absolute; 
+    left: 0; 
+    bottom: -2px; 
+    width: 100%; 
+    height: 2px; 
+    background-color: hsl(var(--primary)); 
+    transform: scaleX(0); 
+    transform-origin: right; 
+    transition: transform .3s ease; 
+  }
+  
+  /* On hover, scale the underline to full width */
+  .story-link:hover::after { 
+    transform: scaleX(1); 
+    transform-origin: left; 
+  }
 }

@@ -1,6 +1,7 @@
 // Import UI components and utilities
 import { Card } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
+import { memo } from "react"; // Add memo for performance
 import type { LucideIcon } from "lucide-react";
 
 // TypeScript interface defining the props for CategoryCard
@@ -14,7 +15,7 @@ interface CategoryCardProps {
 }
 
 /**
- * CategoryCard Component
+ * CategoryCard Component (Memoized for Performance)
  * 
  * Displays a clickable card for each menu category
  * Features:
@@ -22,16 +23,23 @@ interface CategoryCardProps {
  * - Responsive hover and active states
  * - Accessibility support with proper ARIA attributes
  * - Elegant shadow and scaling animations
+ * - Optimized for mobile scrolling performance
  */
-const CategoryCard = ({ title, active, onClick, Icon, imageSrc, compact = false }: CategoryCardProps) => {
+const CategoryCard = memo(({ title, active, onClick, Icon, imageSrc, compact = false }: CategoryCardProps) => {
   return (
     <button
       onClick={onClick}
       className={cn(
         "text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-lg",
-        "hover-scale" // Custom utility class for hover scaling animation
+        // Remove hover-scale on mobile for better performance
+        compact ? "" : "hover-scale"
       )}
       aria-pressed={active} // Accessibility: indicates if this card is selected
+      style={{
+        // Mobile performance optimizations
+        touchAction: 'manipulation', // Faster touch response
+        willChange: compact ? 'auto' : 'transform', // Optimize animations
+      }}
     >
       <Card
         className={cn(
@@ -64,6 +72,12 @@ const CategoryCard = ({ title, active, onClick, Icon, imageSrc, compact = false 
                 alt={`${title} image`}
                 className="absolute inset-0 w-full h-full object-cover"
                 loading="lazy" // Optimize image loading
+                decoding="async" // Non-blocking image decoding
+                style={{ 
+                  willChange: 'auto', // Optimize for animations
+                  backfaceVisibility: 'hidden', // Prevent rendering issues
+                  transform: 'translateZ(0)' // Force hardware acceleration
+                }}
               />
             ) : (
               <Icon className={cn("text-primary", compact ? "size-5" : "size-7")} aria-hidden="true" />
@@ -87,6 +101,9 @@ const CategoryCard = ({ title, active, onClick, Icon, imageSrc, compact = false 
       </Card>
     </button>
   );
-};
+});
+
+// Add display name for debugging
+CategoryCard.displayName = 'CategoryCard';
 
 export default CategoryCard;
