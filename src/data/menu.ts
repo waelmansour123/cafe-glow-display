@@ -1,15 +1,36 @@
+/**
+ * Menu Data Types and Structure
+ * 
+ * This file contains the complete menu data for Golden Cafe
+ * including all categories, items, prices, and descriptions
+ */
+
+// TypeScript interface for individual menu items
 export type MenuItem = {
-  name: string;
-  price: string;
-  description?: string;
+  name: string;        // Item name (e.g., "Marguerita Pizza")
+  price: string;       // Price in local currency (appears to be Tunisian Dinars)
+  description?: string; // Optional description of ingredients/preparation
 };
 
+// TypeScript interface for menu categories
 export type MenuCategory = {
-  id: string;
-  title: string;
-  items: MenuItem[];
+  id: string;          // Unique identifier for the category (used for routing/images)
+  title: string;       // Display name of the category
+  items: MenuItem[];   // Array of menu items in this category
 };
 
+/**
+ * Complete menu data for Golden Cafe
+ * 
+ * Organized by categories ranging from traditional Tunisian dishes
+ * to international items like pizza, burgers, and specialty drinks
+ * 
+ * Categories include:
+ * - Food: Pizza, Burgers, Salads, Pasta, Tunisian specialties
+ * - Drinks: Coffee varieties, Fresh juices, Smoothies, Cocktails
+ * - Desserts: Pancakes, Waffles, Crepes, Ice cream
+ * - Special Menus: Breakfast combinations and family packages
+ */
 export const menuData: MenuCategory[] = [
   {
     id: "supplement",
