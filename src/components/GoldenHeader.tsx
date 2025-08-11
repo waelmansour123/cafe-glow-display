@@ -7,7 +7,7 @@ const GoldenHeader = () => {
         className="absolute inset-0 opacity-70"
         aria-hidden="true"
         style={{
-          backgroundImage: `url('/og-hero.jpg?v=${Date.now()}')`,
+          backgroundImage: "url('/og-hero.jpg')",
           backgroundSize: "cover",
           backgroundPosition: "center",
           backgroundRepeat: "no-repeat",
@@ -18,10 +18,10 @@ const GoldenHeader = () => {
         <div className="mx-auto max-w-3xl text-center animate-enter">
           <img
             src={heroLogo}
-            width={120}
-            height={120}
-            alt="Golden Coffee Resto logo – elegant golden coffee cup with steam"
-            className="mx-auto mb-6 shadow-elegant"
+            width={96}
+            height={96}
+            alt="Golden Cafe logo – elegant golden coffee cup"
+            className="mx-auto mb-6 rounded-full shadow-elegant"
             loading="lazy"
           />
           <h1 className="font-display text-4xl md:text-5xl font-semibold tracking-tight text-primary drop-shadow-sm">
