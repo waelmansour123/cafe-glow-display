@@ -21,9 +21,7 @@ import {
   ListChecks,
   Flame,
 } from "lucide-react";
-// React hooks for state management and performance optimization
-import { useEffect, useMemo, useRef, useState, useCallback } from "react";
-// TypeScript type for icon components
+import { useEffect, useMemo, useRef, useState } from "react";
 import type { LucideIcon } from "lucide-react";
 
 // Category icons fallback map
@@ -101,11 +99,6 @@ const Index = () => {
   const categories = useMemo(() => menuData, []);
   const [selectedCategoryId, setSelectedCategoryId] = useState<string | null>(null);
 
-  // Memoized callback for category selection to prevent unnecessary re-renders
-  const handleCategorySelect = useCallback((categoryId: string) => {
-    setSelectedCategoryId(categoryId);
-  }, []);
-
   const imageMap = useMemo(() => ({
     pizza: imgPizza,
     burger: imgBurger,
@@ -168,26 +161,24 @@ const Index = () => {
           <h2 className="font-display text-2xl md:text-3xl text-primary">Browse by Category</h2>
           <p className="text-muted-foreground mt-1">Tap a category to view items and prices</p>
         </div>
-        {/* Mobile layout: 2-column grid for better screen utilization */}
-        <div className="md:hidden grid grid-cols-2 gap-3 px-2 mobile-grid mobile-scroll">
+        {/* Mobile: centered vertical list. Desktop: responsive grid */}
+        <div className="md:hidden flex flex-col items-center gap-4">
           {categories.map((cat) => {
             const Icon = iconMap[cat.id] || Coffee;
             const imageSrc = imageMap[cat.id as keyof typeof imageMap];
             return (
-              <CategoryCard
-                key={cat.id}
-                title={cat.title}
-                Icon={Icon}
-                active={selectedCategoryId === cat.id}
-                onClick={() => handleCategorySelect(cat.id)}
-                imageSrc={imageSrc}
-                compact={true} // New prop for mobile layout
-              />
+              <div key={cat.id} ref={(el) => { itemRefs.current[cat.id] = el; }} className="w-full max-w-md">
+                <CategoryCard
+                  title={cat.title}
+                  Icon={Icon}
+                  active={selectedCategoryId === cat.id}
+                  onClick={() => setSelectedCategoryId(cat.id)}
+                  imageSrc={imageSrc}
+                />
+              </div>
             );
           })}
         </div>
-
-        {/* Desktop layout: responsive grid */}
         <div className="hidden md:grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
           {categories.map((cat) => {
             const Icon = iconMap[cat.id] || Coffee;
@@ -198,7 +189,7 @@ const Index = () => {
                 title={cat.title}
                 Icon={Icon}
                 active={selectedCategoryId === cat.id}
-                onClick={() => handleCategorySelect(cat.id)}
+                onClick={() => setSelectedCategoryId(cat.id)}
                 imageSrc={imageSrc}
               />
             );
