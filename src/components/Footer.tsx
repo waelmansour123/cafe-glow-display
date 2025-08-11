@@ -18,9 +18,9 @@ const Footer = () => {
         <div>
           <h4 className="font-medium">Follow us</h4>
           <nav className="mt-2 flex gap-4 text-sm">
-            <a href="#" aria-label="Instagram" className="hover:underline story-link">Instagram</a>
-            <a href="#" aria-label="Facebook" className="hover:underline story-link">Facebook</a>
-            <a href="#" aria-label="TikTok" className="hover:underline story-link">TikTok</a>
+            <a href="#" aria-label="Instagram" className="hover:underline story-link" onClick={() => window.open("https://www.instagram.com/golden_coffee_lounge/profilecard/?igsh=MXZzZTE2aTZ0b3Bxbw==", "_blank")}>Instagram</a>
+            <a href="#" aria-label="Facebook" className="hover:underline story-link" onClick={() => window.open("https://www.facebook.com/share/1CpvyZqVGw/", "_blank")}>Facebook</a>
+            <a href="#" aria-label="TikTok" className="hover:underline story-link" onClick={() => window.open("https://www.tiktok.com/@goldencoffe.hamemchatt?_t=ZM-8ymkTj1ZUTY&_r=1", "_blank")}>TikTok</a>
           </nav>
         </div>
       </div>
