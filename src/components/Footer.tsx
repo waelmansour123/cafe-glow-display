@@ -9,18 +9,23 @@ const Footer = () => {
           </p>
         </div>
         <div>
-          <h4 className="font-medium">Contact</h4>
-          <ul className="mt-2 space-y-1 text-sm text-muted-foreground">
-            <li>Phone: +216 12 345 678</li>
-            <li>Email: hello@goldencafe.tn</li>
-          </ul>
-        </div>
+  <h4 className="font-medium">Contact</h4>
+  <ul className="mt-2 space-y-1 text-sm text-muted-foreground">
+    <li>
+      Phone:{" "}
+      <a href="tel:+21655044728" className="hover:underline">
+        +216 55044728
+      </a>
+    </li>
+    <li>Email: hello@goldencafe.tn</li>
+  </ul>
+</div>
         <div>
           <h4 className="font-medium">Follow us</h4>
           <nav className="mt-2 flex gap-4 text-sm">
-            <a href="#" aria-label="Instagram" className="hover:underline story-link" onClick={() => window.open("https://www.instagram.com/golden_coffee_lounge/profilecard/?igsh=MXZzZTE2aTZ0b3Bxbw==", "_blank")}>Instagram</a>
-            <a href="#" aria-label="Facebook" className="hover:underline story-link" onClick={() => window.open("https://www.facebook.com/share/1CpvyZqVGw/", "_blank")}>Facebook</a>
-            <a href="#" aria-label="TikTok" className="hover:underline story-link" onClick={() => window.open("https://www.tiktok.com/@goldencoffe.hamemchatt?_t=ZM-8ymkTj1ZUTY&_r=1", "_blank")}>TikTok</a>
+            <a href="#" aria-label="Instagram" className="hover:underline story-link">Instagram</a>
+            <a href="#" aria-label="Facebook" className="hover:underline story-link">Facebook</a>
+            <a href="#" aria-label="TikTok" className="hover:underline story-link">TikTok</a>
           </nav>
         </div>
       </div>
