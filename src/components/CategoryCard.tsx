@@ -1,109 +1,60 @@
-// Import UI components and utilities
 import { Card } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
-import { memo } from "react"; // Add memo for performance
 import type { LucideIcon } from "lucide-react";
 
-// TypeScript interface defining the props for CategoryCard
 interface CategoryCardProps {
-  title: string;           // Category name to display
-  active?: boolean;        // Whether this card is currently selected
-  onClick?: () => void;    // Function to call when card is clicked
-  Icon: LucideIcon;       // Lucide icon component to display
-  imageSrc?: string;      // Optional image URL for the category
-  compact?: boolean;      // Optional compact mode for mobile
+  title: string;
+  active?: boolean;
+  onClick?: () => void;
+  Icon: LucideIcon;
+  imageSrc?: string;
 }
 
-/**
- * CategoryCard Component (Memoized for Performance)
- * 
- * Displays a clickable card for each menu category
- * Features:
- * - Shows category image or fallback icon
- * - Responsive hover and active states
- * - Accessibility support with proper ARIA attributes
- * - Elegant shadow and scaling animations
- * - Optimized for mobile scrolling performance
- */
-const CategoryCard = memo(({ title, active, onClick, Icon, imageSrc, compact = false }: CategoryCardProps) => {
+const CategoryCard = ({ title, active, onClick, Icon, imageSrc }: CategoryCardProps) => {
   return (
     <button
       onClick={onClick}
       className={cn(
-        "text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-lg",
-        // Remove hover-scale on mobile for better performance
-        compact ? "" : "hover-scale"
+        "text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-lg w-full",
+        "hover-scale"
       )}
-      aria-pressed={active} // Accessibility: indicates if this card is selected
-      style={{
-        // Mobile performance optimizations
-        touchAction: 'manipulation', // Faster touch response
-        willChange: compact ? 'auto' : 'transform', // Optimize animations
-      }}
+      aria-pressed={active}
     >
       <Card
         className={cn(
-          // Base styles
-          "rounded-lg border bg-card/80 backdrop-blur-sm transition-shadow",
-          // Responsive padding - smaller on mobile when compact
-          compact ? "p-3" : "p-4 md:p-5",
-          // Conditional styling based on active state
+          // Responsive padding and sizing for mobile grid
+          "p-3 md:p-5 rounded-lg border bg-card/80 backdrop-blur-sm w-full",
+          "transition-shadow",
           active ? "shadow-glow" : "shadow-elegant hover:shadow-glow"
         )}
       >
-        <div className={cn(
-          "flex items-center gap-3",
-          // In compact mode, use smaller gap and potentially stack vertically on very small screens
-          compact && "gap-2"
-        )}>
-          {/* Category icon/image container */}
+        <div className="flex items-center gap-2 md:gap-4">
           <div
             className={cn(
-              "relative flex shrink-0 items-center justify-center rounded-md overflow-hidden",
-              "bg-[hsl(var(--secondary))] text-primary shadow-inner",
-              // Responsive icon size - smaller in compact mode
-              compact ? "size-10" : "size-14"
+              // Responsive icon/image sizing
+              "relative flex size-12 md:size-14 shrink-0 items-center justify-center rounded-md overflow-hidden",
+              "bg-[hsl(var(--secondary))] text-primary shadow-inner"
             )}
           >
-            {/* Show image if available, otherwise show icon */}
             {imageSrc ? (
               <img
                 src={imageSrc}
                 alt={`${title} image`}
                 className="absolute inset-0 w-full h-full object-cover"
-                loading="lazy" // Optimize image loading
-                decoding="async" // Non-blocking image decoding
-                style={{ 
-                  willChange: 'auto', // Optimize for animations
-                  backfaceVisibility: 'hidden', // Prevent rendering issues
-                  transform: 'translateZ(0)' // Force hardware acceleration
-                }}
+                loading="lazy"
               />
             ) : (
-              <Icon className={cn("text-primary", compact ? "size-5" : "size-7")} aria-hidden="true" />
+              <Icon className="size-6 md:size-7" aria-hidden="true" />
             )}
           </div>
-          
-          {/* Category information */}
-          <div className="flex-1 min-w-0">
-            <div className={cn(
-              "font-medium text-foreground truncate",
-              // Responsive text size
-              compact ? "text-sm" : "text-base md:text-lg"
-            )}>
-              {title}
-            </div>
-            {!compact && (
-              <div className="text-sm text-muted-foreground">Tap to view items</div>
-            )}
+          <div className="min-w-0 flex-1">
+            <div className="font-medium text-sm md:text-lg text-foreground truncate">{title}</div>
+            <div className="text-xs md:text-sm text-muted-foreground">Tap to view items</div>
           </div>
         </div>
       </Card>
     </button>
   );
-});
-
-// Add display name for debugging
-CategoryCard.displayName = 'CategoryCard';
+};
 
 export default CategoryCard;
