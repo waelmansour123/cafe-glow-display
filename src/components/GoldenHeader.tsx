@@ -10,6 +10,7 @@ const GoldenHeader = () => {
           backgroundImage: "url('/og-hero.jpg')",
           backgroundSize: "cover",
           backgroundPosition: "center",
+          backgroundRepeat: "no-repeat",
           filter: "saturate(1.1)",
         }}
       />
@@ -24,7 +25,7 @@ const GoldenHeader = () => {
             loading="lazy"
           />
           <h1 className="font-display text-4xl md:text-5xl font-semibold tracking-tight text-primary drop-shadow-sm">
-            Golden Cafe Menu
+            Golden Coffee Resto Menu
           </h1>
           <p className="mt-3 text-lg md:text-xl text-muted-foreground">
             Elegant classics, golden moments. Fresh coffee, artisan bites, sweet delights.
