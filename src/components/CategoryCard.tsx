@@ -49,7 +49,6 @@ const CategoryCard = ({ title, active, onClick, Icon, imageSrc }: CategoryCardPr
           </div>
           <div className="min-w-0 flex-1">
             <div className="font-medium text-sm md:text-lg text-foreground truncate">{title}</div>
-            <div className="text-xs md:text-sm text-muted-foreground">Tap to view items</div>
           </div>
         </div>
       </Card>
