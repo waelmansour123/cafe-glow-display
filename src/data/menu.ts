@@ -373,15 +373,6 @@ export const menuData: MenuCategory[] = [
     ],
   },
   {
-    id: "spooky-shake",
-    title: "SPOOKY SHAKE",
-    items: [
-      { name: "Double Caramel", description: "caramel+caramel beurre salé", price: "15.000" },
-      { name: "Double chocolat", description: "blanc+noir", price: "15.000" },
-      { name: "Fruit rouges café", description: "milkshake+popcorn", price: "15.000" },
-    ],
-  },
-  {
     id: "menus",
     title: "MENUS",
     items: [

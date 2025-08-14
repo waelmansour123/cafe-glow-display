@@ -141,6 +141,94 @@ const Index = () => {
     [categories, selectedCategoryId]
   );
 
+  /*
+   * Browser History Management for Modal Back Button Support
+   * 
+   * This solution prevents users from accidentally leaving the website when they press
+   * the back button on their phone while a category modal is open.
+   * 
+   * How it works:
+   * 1. When a modal opens, we push a new history entry with modalOpen: true
+   * 2. When the user presses back, we intercept the popstate event
+   * 3. Instead of leaving the site, we close the modal and push a new state
+   * 4. This keeps the user on the same page while providing expected back button behavior
+   * 
+   * Additional features:
+   * - Escape key support for closing modals
+   * - Proper cleanup on component unmount
+   * - Handles browser refresh scenarios
+   * - Maintains proper history state
+   */
+  // Browser history management for modal back button support
+  useEffect(() => {
+    // Set initial history state
+    if (!window.history.state) {
+      window.history.replaceState({ modalOpen: false }, '', window.location.pathname);
+    }
+
+    const handlePopState = (event: PopStateEvent) => {
+      // If we have a selected category and the user pressed back, close the modal
+      if (selectedCategoryId) {
+        setSelectedCategoryId(null);
+        // Push a new state to prevent the back button from leaving the site
+        window.history.pushState({ modalOpen: false }, '', window.location.pathname);
+      }
+    };
+
+    // Listen for browser back button events
+    window.addEventListener('popstate', handlePopState);
+
+    return () => {
+      window.removeEventListener('popstate', handlePopState);
+    };
+  }, [selectedCategoryId]);
+
+  // Cleanup effect to handle component unmount
+  useEffect(() => {
+    return () => {
+      // If component unmounts with modal open, clean up history
+      if (selectedCategoryId && window.history.state?.modalOpen) {
+        window.history.back();
+      }
+    };
+  }, [selectedCategoryId]);
+
+  // Handle modal open/close with history management
+  const handleCategorySelect = (categoryId: string) => {
+    setSelectedCategoryId(categoryId);
+    // Push a new history entry when modal opens
+    window.history.pushState({ modalOpen: true, categoryId }, '', window.location.pathname);
+  };
+
+  const handleModalClose = () => {
+    setSelectedCategoryId(null);
+    // Go back in history when modal closes
+    if (window.history.state?.modalOpen) {
+      window.history.back();
+    }
+  };
+
+  // Handle direct navigation to page with modal open (e.g., browser refresh)
+  useEffect(() => {
+    if (window.history.state?.modalOpen && window.history.state?.categoryId) {
+      setSelectedCategoryId(window.history.state.categoryId);
+    }
+  }, []);
+
+  // Handle escape key to close modal
+  useEffect(() => {
+    const handleEscape = (event: KeyboardEvent) => {
+      if (event.key === 'Escape' && selectedCategoryId) {
+        handleModalClose();
+      }
+    };
+
+    if (selectedCategoryId) {
+      document.addEventListener('keydown', handleEscape);
+      return () => document.removeEventListener('keydown', handleEscape);
+    }
+  }, [selectedCategoryId]);
+
   // Scroll the selected category into view in the mobile list
   const itemRefs = useRef<Record<string, HTMLDivElement | null>>({});
   useEffect(() => {
@@ -172,7 +260,7 @@ const Index = () => {
                   title={cat.title}
                   Icon={Icon}
                   active={selectedCategoryId === cat.id}
-                  onClick={() => setSelectedCategoryId(cat.id)}
+                  onClick={() => handleCategorySelect(cat.id)}
                   imageSrc={imageSrc}
                 />
               </div>
@@ -189,7 +277,7 @@ const Index = () => {
                 title={cat.title}
                 Icon={Icon}
                 active={selectedCategoryId === cat.id}
-                onClick={() => setSelectedCategoryId(cat.id)}
+                onClick={() => handleCategorySelect(cat.id)}
                 imageSrc={imageSrc}
               />
             );
@@ -200,7 +288,7 @@ const Index = () => {
       <CategoryModal
         category={selectedCategory}
         open={!!selectedCategory}
-        onOpenChange={(o) => !o && setSelectedCategoryId(null)}
+        onOpenChange={(o) => !o && handleModalClose()}
         imageSrc={selectedCategory ? imageMap[selectedCategory.id as keyof typeof imageMap] : undefined}
       />
 
